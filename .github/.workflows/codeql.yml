@@ -36,22 +36,12 @@ jobs:
       with:
         languages: ${{ matrix.language }}
 
-
-
     - name: Autobuild
       if: env.JS_CHANGED == 'true'
       uses: github/codeql-action/autobuild@v2
-
-
-
 
     - name: Perform CodeQL Analysis
       if: env.JS_CHANGED == 'true'
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
-
-    - name: Report success if no .js files changed
-      if: env.JS_CHANGED == 'false'
-      run: |
-        echo "No .js files changed. Skipping CodeQL analysis."
