@@ -42,7 +42,7 @@ docker-compose up --build
 
 ## Credits
 
-This tool was created by [XargsUK](https://github.com/XargsUK/). Feel free to reach out if you have any questions or feedback by raising an [issue](https://github.com/XargsUK/otf-to-ttf-converter/issues).
+This tool was created by [XargsUK](https://github.com/XargsUK). Feel free to reach out if you have any questions or feedback by raising an [issue](https://github.com/XargsUK/otf-to-ttf-converter/issues).
 
 This project uses the following open-source libraries:
 
