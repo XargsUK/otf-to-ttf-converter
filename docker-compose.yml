@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  font-converter:
+    build: .
+    volumes:
+      - ./otf:/otf
+      - ./ttf:/ttf
