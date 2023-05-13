@@ -1,0 +1,57 @@
+name: "CodeQL"
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    env:
+      MY_PAT: ${{ secrets.GH_PAT }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'python' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Check for changes in .js files
+      id: check_js_changes
+      run: |
+        git fetch --depth=1 origin main
+        git diff --name-only HEAD origin/main | grep '\.js$' > /dev/null && echo "JS_CHANGED=true" || echo "JS_CHANGED=false"
+        echo "JS_CHANGED=$(echo "JS_CHANGED")" >> $GITHUB_ENV
+
+    - name: Initialize CodeQL
+      if: env.JS_CHANGED == 'true'
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+
+
+
+    - name: Autobuild
+      if: env.JS_CHANGED == 'true'
+      uses: github/codeql-action/autobuild@v2
+
+
+
+
+    - name: Perform CodeQL Analysis
+      if: env.JS_CHANGED == 'true'
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
+
+    - name: Report success if no .js files changed
+      if: env.JS_CHANGED == 'false'
+      run: |
+        echo "No .js files changed. Skipping CodeQL analysis."
